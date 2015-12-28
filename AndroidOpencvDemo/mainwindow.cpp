@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include "androidimagepicker.h"
 
+using namespace std;
+using namespace cv;
+
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -30,7 +33,12 @@ void MainWindow::on_actionGallery_triggered()
 
 void MainWindow::returnImagePath(QString path)
 {
-    QMessageBox::information(NULL, "The path is:", path);
+    src = imread(path.toStdString());
+    if(src.data == NULL)
+    {
+        qDebug() << "read image error";
+        return;
+    }
 
     //ui->label_src->setPixmap(QPixmap::fromImage(*img));
 }

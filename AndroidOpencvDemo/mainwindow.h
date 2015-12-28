@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QtAndroidExtras>
 
+#include "opencv2/opencv.hpp"
+
 namespace Ui {
 class MainWindow;
 }
@@ -27,6 +29,9 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+
+public:
+    cv::Mat src;
 };
 
 #endif // MAINWINDOW_H
