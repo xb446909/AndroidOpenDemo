@@ -40,5 +40,23 @@ void MainWindow::returnImagePath(QString path)
         return;
     }
 
-    //ui->label_src->setPixmap(QPixmap::fromImage(*img));
+    ui->label_src->setPixmap(QPixmap::fromImage(QImageFromMat(src)));
+}
+
+QImage MainWindow::QImageFromMat(cv::Mat mat)
+{
+    QImage img;
+    switch(mat.channels())
+    {
+    case 3:
+        cvtColor(mat, mat, CV_BGR2RGB);
+        img = QImage(mat.data, mat.cols, mat.rows, QImage::Format_RGB888);
+        break;
+    case 1:
+    case 4:
+        img = QImage(mat.data, mat.cols, mat.rows, QImage::Format_ARGB32);
+    default:
+        break;
+    }
+    return img;
 }

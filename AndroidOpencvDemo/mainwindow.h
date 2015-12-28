@@ -32,6 +32,8 @@ private:
 
 public:
     cv::Mat src;
+
+    static QImage QImageFromMat(cv::Mat mat);
 };
 
 #endif // MAINWINDOW_H
