@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QObject>
+#include <QLabel>
 #include <QtAndroidExtras>
 
 #include "opencv2/opencv.hpp"
@@ -24,6 +25,8 @@ private slots:
 
     void on_actionGallery_triggered();
 
+    void on_pushButton_proc_clicked();
+
 public slots:
     void returnImagePath(QString path);
 
@@ -32,8 +35,9 @@ private:
 
 public:
     cv::Mat src;
-
     static QImage QImageFromMat(cv::Mat mat);
+    void InitDialog();
+    void show_image(cv::Mat mat, QLabel *label);
 };
 
 #endif // MAINWINDOW_H

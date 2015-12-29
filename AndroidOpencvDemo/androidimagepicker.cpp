@@ -1,7 +1,5 @@
 #include "androidimagepicker.h"
 
-QMutex mutex;
-
 AndroidImagePicker::AndroidImagePicker()
 {
 
@@ -9,12 +7,15 @@ AndroidImagePicker::AndroidImagePicker()
 
 AndroidImagePicker* AndroidImagePicker::pInst = NULL;
 
+static QMutex mutex;
+
 AndroidImagePicker* AndroidImagePicker::Get()
 {
     if(pInst == NULL)
     {
         mutex.lock();
-        pInst = new AndroidImagePicker();
+        if(pInst == NULL)
+            pInst = new AndroidImagePicker();
         mutex.unlock();
     }
     return pInst;

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QtAndroidExtras>
+#include <QMutex>
 
 class AndroidImagePicker : public QObject, public QAndroidActivityResultReceiver
 {

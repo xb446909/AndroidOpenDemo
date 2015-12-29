@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    androidimagepicker.cpp
+    androidimagepicker.cpp \
+    imageproc.cpp
 
 HEADERS  += mainwindow.h \
-    androidimagepicker.h
+    androidimagepicker.h \
+    imageproc.h
 
 FORMS    += mainwindow.ui
 
@@ -45,3 +47,4 @@ DISTFILES += \
     android/gradlew.bat
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
