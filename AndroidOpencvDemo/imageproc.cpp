@@ -40,7 +40,7 @@ Mat ImageProc::imageProc_threshold(Mat src)
 {
     Mat dst;
     dst = imageProc_toGray(src);
-    adaptiveThreshold(dst, dst, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 3, 5);
+    threshold(dst, dst, 0, 255, THRESH_BINARY  | THRESH_OTSU);
     return dst;
 }
 

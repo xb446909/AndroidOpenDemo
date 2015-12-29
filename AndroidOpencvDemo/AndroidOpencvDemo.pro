@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     androidimagepicker.cpp \
-    imageproc.cpp
+    imageproc.cpp \
+    cameracap.cpp
 
 HEADERS  += mainwindow.h \
     androidimagepicker.h \
-    imageproc.h
+    imageproc.h \
+    cameracap.h
 
 FORMS    += mainwindow.ui
 
@@ -27,7 +29,7 @@ CONFIG += mobility
 MOBILITY = 
 
 
-unix:!macx: LIBS += -L$$PWD/../sdk/native/libs/x86/ -lopencv_java3 -lopencv_core -lopencv_highgui
+unix:!macx: LIBS += -L$$PWD/../sdk/native/libs/x86/ -lopencv_java3 -lopencv_core
 
 INCLUDEPATH += $$PWD/../sdk/native/jni/include
 DEPENDPATH += $$PWD/../sdk/native/jni/include

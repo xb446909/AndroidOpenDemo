@@ -29,6 +29,7 @@ private slots:
 
 public slots:
     void returnImagePath(QString path);
+    void returnFrame(cv::Mat frame);
 
 private:
     Ui::MainWindow *ui;

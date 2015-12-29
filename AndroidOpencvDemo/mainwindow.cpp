@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "androidimagepicker.h"
 #include "imageproc.h"
+#include "cameracap.h"
 
 #include <QMessageBox>
 
@@ -28,7 +29,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionCamera_triggered()
 {
-    QMessageBox::information(NULL, "Information", "Open Camera");
+    qRegisterMetaType<cv::Mat>("cv::Mat");
+    connect(CameraCap::Get(), SIGNAL(sendFrame(cv::Mat)), this, SLOT(returnFrame(cv::Mat)), Qt::QueuedConnection);
+    CameraCap::Get()->run();
 }
 
 void MainWindow::on_actionGallery_triggered()
@@ -53,6 +56,11 @@ void MainWindow::returnImagePath(QString path)
         return;
     }
     show_src(src);
+}
+
+void MainWindow::returnFrame(Mat frame)
+{
+    show_src(frame);
 }
 
 QImage MainWindow::QImageFromMat(cv::Mat mat)
@@ -101,7 +109,7 @@ void MainWindow::on_pushButton_proc_clicked()
     }
     if(ui->comboBox_method->currentText().compare("Canny") == 0)
     {
-        dst = ImageProc::Get()->imageProc_canny(src, 10, 50);
+        dst = ImageProc::Get()->imageProc_canny(src, 0, 30);
         show_dst(dst);
     }
 }
