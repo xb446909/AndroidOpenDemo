@@ -42,6 +42,7 @@ void MainWindow::on_actionGallery_triggered()
 
 void MainWindow::InitDialog()
 {
+    pVideoWidget = new QVideoWidget();
     ui->comboBox_method->insertItem(0, "To Gray");
     ui->comboBox_method->insertItem(0, "Threshold");
     ui->comboBox_method->insertItem(0, "Canny");
