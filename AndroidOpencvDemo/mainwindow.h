@@ -5,7 +5,6 @@
 #include <QObject>
 #include <QLabel>
 #include <QtAndroidExtras>
-#include <QVideoWidget>
 
 #include "opencv2/opencv.hpp"
 
@@ -34,7 +33,6 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    QVideoWidget* pVideoWidget;
 
 public:
     cv::Mat src;

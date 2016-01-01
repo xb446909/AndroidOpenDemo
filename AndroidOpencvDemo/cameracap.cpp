@@ -8,11 +8,7 @@ using namespace cv;
 
 CameraCap::CameraCap()
 {
-    pcamera = new QCamera(this);
-    connect(pcamera, SIGNAL(error(QCamera::Error)), this, SLOT(CameraError(QCamera::Error)));
-    connect(pcamera, SIGNAL(stateChanged(QCamera::State)), this, SLOT(CameraStateChanged(QCamera::State)));
-    connect(pcamera, SIGNAL(statusChanged(QCamera::Status)), this, SLOT(CameraStatusChanged(QCamera::Status)));
-    pcamera->load();
+
 }
 
 CameraCap* CameraCap::pInst = NULL;
@@ -32,14 +28,7 @@ CameraCap *CameraCap::Get()
 
 void CameraCap::run()
 {
-    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
-    foreach (const QCameraInfo &cameraInfo, cameras)
-        qDebug() << cameraInfo.deviceName();
-}
 
-void CameraCap::setVideoWiget(QVideoWidget *pWidget)
-{
-    pcamera->setViewfinder(pWidget);
 }
 
 
@@ -78,8 +67,7 @@ void CameraCap::CameraStateChanged(QCamera::State value)
         qDebug() << "Camera: The camera is loaded and ready to be configured.";
         break;
     case QCamera::ActiveState:
-        qDebug() << "Camera: Camera In the active state as soon as camera is started the\
-                     viewfinder displays video frames and the camera is ready for capture.";
+        qDebug() << "Camera: Camera In the active state as soon as camera is started the viewfinder displays video frames and the camera is ready for capture.";
         break;
     default:
         break;

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia multimediawidgets androidextras
+QT       += core gui multimedia quickwidgets androidextras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,7 +29,7 @@ CONFIG += mobility
 MOBILITY = 
 
 
-unix:!macx: LIBS += -L$$PWD/../sdk/native/libs/x86/ -lopencv_java3 -lopencv_core
+unix:!macx: LIBS += -L$$PWD/../sdk/native/libs/x86/ -L$$PWD/../sdk/native/libs/armeabi-v7a/ -lopencv_java3 -lopencv_core
 
 INCLUDEPATH += $$PWD/../sdk/native/jni/include
 DEPENDPATH += $$PWD/../sdk/native/jni/include
@@ -49,4 +49,12 @@ DISTFILES += \
     android/gradlew.bat
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
+RESOURCES += \
+    resource.qrc
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_EXTRA_LIBS = \
+        $$PWD/../sdk/native/libs/armeabi-v7a/libopencv_java3.so
+}
 

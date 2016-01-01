@@ -29,8 +29,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionCamera_triggered()
 {
-    qRegisterMetaType<cv::Mat>("cv::Mat");
-    connect(CameraCap::Get(), SIGNAL(sendFrame(cv::Mat)), this, SLOT(returnFrame(cv::Mat)), Qt::QueuedConnection);
+    //return;
+    //qRegisterMetaType<cv::Mat>("cv::Mat");
+    //connect(CameraCap::Get(), SIGNAL(sendFrame(cv::Mat)), this, SLOT(returnFrame(cv::Mat)), Qt::QueuedConnection);
     CameraCap::Get()->run();
 }
 
@@ -42,7 +43,6 @@ void MainWindow::on_actionGallery_triggered()
 
 void MainWindow::InitDialog()
 {
-    pVideoWidget = new QVideoWidget();
     ui->comboBox_method->insertItem(0, "To Gray");
     ui->comboBox_method->insertItem(0, "Threshold");
     ui->comboBox_method->insertItem(0, "Canny");
