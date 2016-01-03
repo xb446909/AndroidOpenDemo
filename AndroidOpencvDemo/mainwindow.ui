@@ -39,8 +39,8 @@
          <widget class="QLabel" name="label_src">
           <property name="maximumSize">
            <size>
-            <width>54</width>
-            <height>12</height>
+            <width>16777215</width>
+            <height>16777215</height>
            </size>
           </property>
           <property name="text">
@@ -124,7 +124,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Process</string>
+         <string>Shot</string>
         </property>
         <property name="default">
          <bool>true</bool>

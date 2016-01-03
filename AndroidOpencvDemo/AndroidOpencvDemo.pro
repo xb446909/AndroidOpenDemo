@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia quickwidgets androidextras
+QT       += core gui multimedia multimediawidgets quickwidgets androidextras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "androidimagepicker.h"
-#include "imageproc.h"
-#include "cameracap.h"
 
 #include <QMessageBox>
 
@@ -29,10 +27,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionCamera_triggered()
 {
+    ui->pushButton_proc->setText(tr("Shot"));
+    ui->stackedWidget->setCurrentIndex(0);
     //return;
     //qRegisterMetaType<cv::Mat>("cv::Mat");
     //connect(CameraCap::Get(), SIGNAL(sendFrame(cv::Mat)), this, SLOT(returnFrame(cv::Mat)), Qt::QueuedConnection);
-    CameraCap::Get()->run();
+    //CameraCap::Get()->run();
 }
 
 void MainWindow::on_actionGallery_triggered()
@@ -43,25 +43,37 @@ void MainWindow::on_actionGallery_triggered()
 
 void MainWindow::InitDialog()
 {
-    ui->comboBox_method->insertItem(0, "To Gray");
-    ui->comboBox_method->insertItem(0, "Threshold");
-    ui->comboBox_method->insertItem(0, "Canny");
+    ui->comboBox_method->insertItem(0, tr("To Gray"));
+    ui->comboBox_method->insertItem(0, tr("Threshold"));
+    ui->comboBox_method->insertItem(0, tr("Canny"));
+
+    QQuickItem* rootItem = ui->quickWidget->rootObject();
+    cameraObj = rootItem->findChild<QObject*>("cameraObj");
+    videoOutputObj = rootItem->findChild<QObject*>("videoOutputObj");
+    imageCaptureObj = rootItem->findChild<QObject*>("imageCaptureObj");
+    if((cameraObj == 0) || (videoOutputObj == 0) || (imageCaptureObj == 0))
+    {
+        qDebug() << "Can not find item.";
+        return;
+    }
+    connect(rootItem, SIGNAL(imageCaptured(QString)), this, SLOT(returnImagePath(QString)));
 }
 
 void MainWindow::returnImagePath(QString path)
 {
+    qDebug() << path;
+    QMessageBox::information(this, "info", "Get path");
+    if(path == 0) return;
     src = imread(path.toStdString());
     if(src.data == NULL)
     {
         qDebug() << "read image error";
         return;
     }
-    show_src(src);
-}
 
-void MainWindow::returnFrame(Mat frame)
-{
-    show_src(frame);
+    ui->pushButton_proc->setText(tr("Process"));
+    ui->stackedWidget->setCurrentIndex(1);
+    show_src(src);
 }
 
 QImage MainWindow::QImageFromMat(cv::Mat mat)
@@ -95,7 +107,7 @@ void MainWindow::show_image(cv::Mat mat, QLabel* label)
                                                                    Qt::KeepAspectRatio));
 }
 
-void MainWindow::on_pushButton_proc_clicked()
+void MainWindow::doProcess()
 {
     Mat dst;
     if(ui->comboBox_method->currentText().compare("To Gray") == 0)
@@ -112,5 +124,22 @@ void MainWindow::on_pushButton_proc_clicked()
     {
         dst = ImageProc::Get()->imageProc_canny(src, 0, 30);
         show_dst(dst);
+    }
+}
+
+void MainWindow::takeShot()
+{
+    QMetaObject::invokeMethod(imageCaptureObj, "capture", Qt::QueuedConnection);
+}
+
+void MainWindow::on_pushButton_proc_clicked()
+{
+    if(ui->pushButton_proc->text().compare("Process") == 0)
+    {
+        doProcess();
+    }
+    else
+    {
+        takeShot();
     }
 }

@@ -60,6 +60,7 @@ void AndroidImagePicker::handleActivityResult(int receiverRequestCode, int resul
     }
     else
     {
+        emit imagePathSignal(0);
         qDebug() << "Get Image Error";
     }
 }

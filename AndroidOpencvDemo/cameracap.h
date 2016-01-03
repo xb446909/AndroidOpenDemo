@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QThread>
 #include <QCamera>
+#include <QCameraViewfinder>
 
 class CameraCap : public QThread
 {
@@ -16,6 +17,8 @@ public:
     CameraCap();
     static CameraCap* Get();
     void run();
+    void setVideoWidget(QCameraViewfinder *pWidget);
+    QCamera* pcamera;
 signals:
     void sendFrame(cv::Mat frame);
 private slots:

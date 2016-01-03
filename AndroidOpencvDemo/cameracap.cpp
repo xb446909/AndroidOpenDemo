@@ -8,7 +8,6 @@ using namespace cv;
 
 CameraCap::CameraCap()
 {
-
 }
 
 CameraCap* CameraCap::pInst = NULL;
@@ -28,9 +27,21 @@ CameraCap *CameraCap::Get()
 
 void CameraCap::run()
 {
-
+    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
+    foreach (const QCameraInfo &cameraInfo, cameras)
+        qDebug() << cameraInfo.deviceName();
+    connect(pcamera, SIGNAL(error(QCamera::Error)), this, SLOT(CameraError(QCamera::Error)));
+    connect(pcamera, SIGNAL(stateChanged(QCamera::State)), this, SLOT(CameraStateChanged(QCamera::State)));
+    connect(pcamera, SIGNAL(statusChanged(QCamera::Status)), this, SLOT(CameraStatusChanged(QCamera::Status)));
+    pcamera->load();
+    pcamera->setCaptureMode(QCamera::CaptureViewfinder);
+    pcamera->start();
 }
 
+void CameraCap::setVideoWidget(QCameraViewfinder *pWidget)
+{
+    pcamera->setViewfinder(pWidget);
+}
 
 void CameraCap::CameraError(QCamera::Error value)
 {

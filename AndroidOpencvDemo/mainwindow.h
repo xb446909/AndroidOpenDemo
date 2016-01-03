@@ -5,8 +5,9 @@
 #include <QObject>
 #include <QLabel>
 #include <QtAndroidExtras>
-
-#include "opencv2/opencv.hpp"
+#include <QQuickItem>
+#include "cameracap.h"
+#include "imageproc.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,16 +30,18 @@ private slots:
 
 public slots:
     void returnImagePath(QString path);
-    void returnFrame(cv::Mat frame);
 
 private:
     Ui::MainWindow *ui;
+    QObject *cameraObj, *videoOutputObj, *imageCaptureObj;
 
 public:
     cv::Mat src;
     static QImage QImageFromMat(cv::Mat mat);
     void InitDialog();
     void show_image(cv::Mat mat, QLabel *label);
+    void doProcess();
+    void takeShot();
 };
 
 #endif // MAINWINDOW_H
