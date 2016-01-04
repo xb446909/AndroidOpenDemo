@@ -28,17 +28,6 @@ FORMS    += mainwindow.ui
 CONFIG += mobility
 MOBILITY = 
 
-
-unix:!macx: LIBS += -L$$PWD/../sdk/native/libs/x86/ -lopencv_java3 -lopencv_core
-
-INCLUDEPATH += $$PWD/../sdk/native/jni/include
-DEPENDPATH += $$PWD/../sdk/native/jni/include
-
-contains(ANDROID_TARGET_ARCH,x86) {
-    ANDROID_EXTRA_LIBS = \
-        $$PWD/../sdk/native/libs/x86/libopencv_java3.so
-}
-
 DISTFILES += \
     android/AndroidManifest.xml \
     android/gradle/wrapper/gradle-wrapper.jar \
@@ -50,3 +39,12 @@ DISTFILES += \
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
+contains(ANDROID_TARGET_ARCH,x86) {
+    ANDROID_EXTRA_LIBS = \
+        $$PWD/../sdk/native/libs/x86/libopencv_java3.so
+}
+
+unix:!macx: LIBS += -L$$PWD/../sdk/native/libs/x86/ -lopencv_java3 -lopencv_core
+
+INCLUDEPATH += $$PWD/../sdk/native/jni/include
+DEPENDPATH += $$PWD/../sdk/native/jni/include

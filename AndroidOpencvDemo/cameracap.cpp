@@ -27,17 +27,6 @@ CameraCap *CameraCap::Get()
 
 void CameraCap::run()
 {
-    VideoCapture cap(0);
-    if(!cap.isOpened())
-    {
-        qDebug() << "Can not open capture";
-        return;
-    }
-    while(1)
-    {
-        Mat frame;
-        cap >> frame;
-        emit sendFrame(frame);
-    }
+
 }
 

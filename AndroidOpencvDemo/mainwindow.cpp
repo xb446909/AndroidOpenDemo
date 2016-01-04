@@ -29,15 +29,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionCamera_triggered()
 {
-    qRegisterMetaType<cv::Mat>("cv::Mat");
-    connect(CameraCap::Get(), SIGNAL(sendFrame(cv::Mat)), this, SLOT(returnFrame(cv::Mat)), Qt::QueuedConnection);
-    CameraCap::Get()->run();
+    AndroidImagePicker::Get()->DoPicker(FROM_CAMERA);
 }
 
 void MainWindow::on_actionGallery_triggered()
 {
     connect(AndroidImagePicker::Get(), SIGNAL(imagePathSignal(QString)), this, SLOT(returnImagePath(QString)));
-    AndroidImagePicker::Get()->DoPicker();
+    AndroidImagePicker::Get()->DoPicker(FROM_GALLERY);
 }
 
 void MainWindow::InitDialog()
