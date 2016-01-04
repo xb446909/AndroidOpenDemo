@@ -36,13 +36,17 @@ void AndroidImagePicker::DoPicker(int source)
         }
         else
         {
-            QAndroidJniObject externalStorageDirectory = QAndroidJniObject::callStaticObjectMethod("android/os/Environment",
-                                                                                                   "getExternalStorageDirectory",
-                                                                                                   "()Ljava/io/File;");
+            QAndroidJniObject IMAGE_CAPTURE = QAndroidJniObject::fromString("android.media.action.IMAGE_CAPTURE");
+            QAndroidJniObject name = QAndroidJniObject::fromString("/data/media/Pictures");
+            QAndroidJniObject picture_dir( "java/io/File",
+                                           "(Ljava/lang/String;)V",
+                                           name.object<jobject>());
+            jboolean ret = picture_dir.callMethod<jboolean>("mkdirs", "()Z");
+            qDebug() << "ret: " << ret;
             QAndroidJniObject tmpImage( "java/io/File",
                                         "(Ljava/io/File;Ljava/lang/String;)V",
-                                        externalStorageDirectory.object<jobject>(),
-                                        QAndroidJniObject::fromString("/tmpImage.jpg").object<jobject>());
+                                        picture_dir.object<jobject>(),
+                                        QAndroidJniObject::fromString("/img_android_opencv.jpg").object<jobject>());
             if(tmpImage.isValid())
             {
                 QAndroidJniObject tmpUri = QAndroidJniObject::callStaticObjectMethod("android/net/Uri",
@@ -88,11 +92,12 @@ void AndroidImagePicker::handleActivityResult(int receiverRequestCode, int resul
     }
     else if (receiverRequestCode == 102 && resultCode == RESULT_OK)
     {
-        QAndroidJniObject externalStorageDirectory = QAndroidJniObject::callStaticObjectMethod("android/os/Environment",
-                                                                                               "getExternalStorageDirectory",
-                                                                                               "()Ljava/io/File;");
-        QAndroidJniObject dir = externalStorageDirectory.callObjectMethod("getPath", "()Ljava/lang/String;");
-        QAndroidJniObject name = QAndroidJniObject::fromString(dir.toString() + "/tmpImage.jpg");
+        QAndroidJniObject name = QAndroidJniObject::fromString("/data/media/Pictures");
+        QAndroidJniObject tmpImage( "java/io/File",
+                                    "(Ljava/lang/String;)V",
+                                    name.object<jobject>());
+        jboolean isexist = tmpImage.callMethod<jboolean>("exists", "()Z");
+        qDebug() << "exist: " << isexist;
         emit imagePathSignal(name.toString());
     }
     else

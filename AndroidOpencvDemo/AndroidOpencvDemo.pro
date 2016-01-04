@@ -44,7 +44,12 @@ contains(ANDROID_TARGET_ARCH,x86) {
         $$PWD/../sdk/native/libs/x86/libopencv_java3.so
 }
 
-unix:!macx: LIBS += -L$$PWD/../sdk/native/libs/x86/ -lopencv_java3 -lopencv_core
+unix:!macx: LIBS += -L$$PWD/../sdk/native/libs/x86/ -L$$PWD/../sdk/native/libs/armeabi-v7a/ -lopencv_java3 -lopencv_core
 
 INCLUDEPATH += $$PWD/../sdk/native/jni/include
 DEPENDPATH += $$PWD/../sdk/native/jni/include
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_EXTRA_LIBS = \
+        $$PWD/../sdk/native/libs/armeabi-v7a/libopencv_java3.so
+}
