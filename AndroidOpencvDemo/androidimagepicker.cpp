@@ -42,7 +42,6 @@ void AndroidImagePicker::DoPicker(int source)
                                            "(Ljava/lang/String;)V",
                                            name.object<jobject>());
             picture_dir.callMethod<jboolean>("mkdirs", "()Z");
-
             QAndroidJniObject tmpImage( "java/io/File",
                                         "(Ljava/io/File;Ljava/lang/String;)V",
                                         picture_dir.object<jobject>(),
@@ -96,8 +95,15 @@ void AndroidImagePicker::handleActivityResult(int receiverRequestCode, int resul
         QAndroidJniObject tmpImage( "java/io/File",
                                     "(Ljava/lang/String;)V",
                                     name.object<jobject>());
-        tmpImage.callMethod<jboolean>("exists", "()Z");
-        emit imagePathSignal(name.toString());
+        jboolean isexist = tmpImage.callMethod<jboolean>("exists", "()Z");
+        if(isexist == true)
+        {
+            emit imagePathSignal(name.toString());
+        }
+        else
+        {
+            qDebug() << "File not exist!";
+        }
     }
     else
     {

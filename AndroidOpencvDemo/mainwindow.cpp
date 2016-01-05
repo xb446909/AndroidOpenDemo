@@ -34,7 +34,6 @@ void MainWindow::on_actionCamera_triggered()
 
 void MainWindow::on_actionGallery_triggered()
 {
-    connect(AndroidImagePicker::Get(), SIGNAL(imagePathSignal(QString)), this, SLOT(returnImagePath(QString)));
     AndroidImagePicker::Get()->DoPicker(FROM_GALLERY);
 }
 
@@ -43,6 +42,7 @@ void MainWindow::InitDialog()
     ui->comboBox_method->insertItem(0, "To Gray");
     ui->comboBox_method->insertItem(0, "Threshold");
     ui->comboBox_method->insertItem(0, "Canny");
+    connect(AndroidImagePicker::Get(), SIGNAL(imagePathSignal(QString)), this, SLOT(returnImagePath(QString)));
 }
 
 void MainWindow::returnImagePath(QString path)
@@ -54,7 +54,6 @@ void MainWindow::returnImagePath(QString path)
         qDebug() << "read image error";
         return;
     }
-    qDebug() << "show";
     show_src(src);
 }
 
