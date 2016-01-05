@@ -37,12 +37,12 @@ void AndroidImagePicker::DoPicker(int source)
         else
         {
             QAndroidJniObject IMAGE_CAPTURE = QAndroidJniObject::fromString("android.media.action.IMAGE_CAPTURE");
-            QAndroidJniObject name = QAndroidJniObject::fromString("/data/media/Pictures");
+            QAndroidJniObject name = QAndroidJniObject::fromString("/sdcard/androidOpencv");
             QAndroidJniObject picture_dir( "java/io/File",
                                            "(Ljava/lang/String;)V",
                                            name.object<jobject>());
-            jboolean ret = picture_dir.callMethod<jboolean>("mkdirs", "()Z");
-            qDebug() << "ret: " << ret;
+            picture_dir.callMethod<jboolean>("mkdirs", "()Z");
+
             QAndroidJniObject tmpImage( "java/io/File",
                                         "(Ljava/io/File;Ljava/lang/String;)V",
                                         picture_dir.object<jobject>(),
@@ -55,7 +55,7 @@ void AndroidImagePicker::DoPicker(int source)
                                                                                      tmpImage.object<jobject>());
                 QAndroidJniObject extra_output = QAndroidJniObject::getStaticObjectField("android/provider/MediaStore", "EXTRA_OUTPUT", "Ljava/lang/String;");
                 intent.callObjectMethod("putExtra",
-                                        "(Ljava/lang/String;Landroid/net/Uri;)Landroid/content/Intent;",
+                                        "(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;",
                                         extra_output.object<jobject>(),
                                         tmpUri.object<jobject>());
                 intent.callObjectMethod("setAction", "(Ljava/lang/String;)Landroid/content/Intent;", IMAGE_CAPTURE.object<jstring>());
@@ -92,12 +92,11 @@ void AndroidImagePicker::handleActivityResult(int receiverRequestCode, int resul
     }
     else if (receiverRequestCode == 102 && resultCode == RESULT_OK)
     {
-        QAndroidJniObject name = QAndroidJniObject::fromString("/data/media/Pictures");
+        QAndroidJniObject name = QAndroidJniObject::fromString("/sdcard/androidOpencv/img_android_opencv.jpg");
         QAndroidJniObject tmpImage( "java/io/File",
                                     "(Ljava/lang/String;)V",
                                     name.object<jobject>());
-        jboolean isexist = tmpImage.callMethod<jboolean>("exists", "()Z");
-        qDebug() << "exist: " << isexist;
+        tmpImage.callMethod<jboolean>("exists", "()Z");
         emit imagePathSignal(name.toString());
     }
     else

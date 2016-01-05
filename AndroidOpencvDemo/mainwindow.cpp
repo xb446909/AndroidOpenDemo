@@ -47,12 +47,14 @@ void MainWindow::InitDialog()
 
 void MainWindow::returnImagePath(QString path)
 {
+    qDebug() << "return path: " << path;
     src = imread(path.toStdString());
     if(src.data == NULL)
     {
         qDebug() << "read image error";
         return;
     }
+    qDebug() << "show";
     show_src(src);
 }
 
